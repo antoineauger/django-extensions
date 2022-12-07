@@ -389,7 +389,10 @@ class ModelGraph:
             return newmodel
         relation = None
         if isinstance(field, ManyToManyField):
-            if hasattr(field.remote_field.through, '_meta') and field.remote_field.through._meta.auto_created:
+            if hasattr(field.remote_field.through, '_meta') and (
+                isinstance(field.remote_field.through, str)
+                or field.remote_field.through._meta.auto_created
+            ):
                 relation = self.add_relation(
                     field,
                     newmodel,
